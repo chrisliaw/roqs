@@ -3,6 +3,8 @@ require_relative 'struct'
 require_relative 'kem_wrapper'
 require_relative 'common_wrapper'
 
+require_relative 'kem_public_key'
+
 module Roqs
   class KEM
    
@@ -60,7 +62,7 @@ module Roqs
      #pubKeyBin = pubKey[0, pubKey.size]
      #privKeyBin = privKey[0, privKey.size]
 
-     [pubKey, privKey]
+     [KEMPublicKey.new(pubKey), privKey]
    end
 
    def derive_encapsulation_key(pubKey)

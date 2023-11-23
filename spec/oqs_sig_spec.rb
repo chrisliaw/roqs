@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'benchmark'
+
 RSpec.describe Roqs do
 
   it 'SIG algorithms' do
@@ -13,31 +15,46 @@ RSpec.describe Roqs do
 
     algos.each do |al|
 
-      begin
-        puts "Testing PQ signing algo #{al}"
+      cnt = 0
+      loop do
 
-        sig = Roqs::SIG.new(al)
-        pubKey, privKey = sig.genkeypair
-        expect(pubKey).not_to be_nil
-        expect(privKey).not_to be_nil
+        begin
+          puts "Testing PQ signing algo #{al}"
 
-        message = " this is super message reuqires signing "
-        sign = sig.sign(message, privKey)
-        puts "Signature output : #{sign.length}"
-        expect(sign).not_to be_nil
+          sig = Roqs::SIG.new(al)
+          pubKey, privKey = sig.genkeypair
+          expect(pubKey).not_to be_nil
+          expect(privKey).not_to be_nil
 
-        res = sig.verify(message, sign, pubKey)
-        expect(res).to be true
+          message = SecureRandom.bytes(rand(50000...80000))
 
-        expect(sig.verify("whatever", sign, pubKey)).to be false
+          Benchmark.bm(8) do |b|
+            b.report("sign : ") { @sign = sig.sign(message, privKey) }
+            #expect(sign).not_to be_nil
+            b.report("Verify : ") { @res = sig.verify(message, @sign, pubKey) }
+          end
 
-        sig.free(pubKey)
-        sig.free(privKey)
-        sig.cleanup
+          expect(@res).to be true
+          
+          expect(sig.verify("whatever", @sign, pubKey)).to be false
 
-      rescue Exception => ex
-        STDERR.puts "Algo '#{al}' getting error result"
-        STDERR.puts ex.message
+          puts "\nAlgo : #{al}"
+          puts "Public key size : #{pubKey.size} bytes"
+          puts "Private key size : #{privKey.size} bytes"
+          puts "Signature input size : #{message.length} bytes"
+          puts "Signature output : #{@sign.length}\n"
+
+
+          sig.free(pubKey)
+          sig.free(privKey)
+          sig.cleanup
+
+        rescue Exception => ex
+          STDERR.puts "Algo '#{al}' getting error result"
+          STDERR.puts ex.message
+        end
+        cnt += 1
+        break if cnt >= 3
       end
 
     end

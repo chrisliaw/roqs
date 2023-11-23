@@ -9,7 +9,6 @@ RSpec.describe Roqs do
     expect { Roqs::KEM.new("random") }.to raise_exception(Roqs::Error)
 
     puts "Found #{algos.length} supported KEM algo"
-    p algos
 
     algos.each do |al|
 
@@ -21,13 +20,20 @@ RSpec.describe Roqs do
         expect(pubKey).not_to be_nil
         expect(privKey).not_to be_nil
 
-        ekey, cipher = kem.derive_encapsulation_key(pubKey)
+        ekey, cipher = kem.derive_encapsulation_key(pubKey.bytes)
         dkey = kem.derive_decapsulation_key(cipher, privKey)
         expect(ekey == dkey).to be true
 
+        pubKeyBin = pubKey.bytes
+
+        kem2 = Roqs::KEM.new(al)
+
+        puts "Public key size : #{pubKey.length} bytes"
+        puts "Public key size 2 : #{pubKey.bytes.length} bytes"
+        puts "Private key size : #{privKey.size} bytes"
         puts "Shared key size of #{al} is #{dkey.length}"
 
-        kem.free(pubKey)
+        kem.free(pubKey.native_pubkey)
         kem.free(privKey)
         kem.cleanup
 
