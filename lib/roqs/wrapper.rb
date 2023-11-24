@@ -6,6 +6,8 @@ module Roqs
     class WrapperError < StandardError; end
 
     module ClassMethods
+      include TR::CondUtils
+
       def load_oqs_lib
         os = detect_os
         logger.debug "Found OS #{os}"
