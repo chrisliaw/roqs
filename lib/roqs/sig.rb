@@ -67,6 +67,7 @@ module Roqs
      
      rv = SIGWrapper.OQS_SIG_verify(@struct, pMessage, message.length, pSignature, signature.length, pubKey)
 
+     logger.debug "Verify result : #{rv}"
      rv == Roqs::OQS_SUCCESS
 
    end
@@ -92,6 +93,11 @@ module Roqs
 
      signBin
      
+   end
+
+   private
+   def logger
+    Roqs.logger(:sig)
    end
 
   end
