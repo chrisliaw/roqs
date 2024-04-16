@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    roqs (0.1.1)
+    roqs (0.1.2)
       teLogger (~> 0.2)
       toolrack (~> 0.23)
 
