@@ -8,16 +8,13 @@ Gem::Specification.new do |spec|
   spec.authors = ["Chris"]
   spec.email = ["chris@antrapol.com"]
 
-  spec.summary = ""
-  spec.description = ""
-  spec.homepage = ""
+  spec.summary = "Ruby wrapper for liboqs"
+  spec.description = "Ruby wrapper for liboqs via direct shared library method invocation. The wrapper is pretty stable since it is direct method invocation from shared library. Any upgrade to the liboqs, after compiled to a shred library, roqs can immediately utilize the upgraded library without any modification."
+  spec.homepage = "https://github.com/chrisliaw/roqs"
   spec.required_ruby_version = ">= 2.6.0"
 
-  #spec.metadata["allowed_push_host"] = "TODO: Set to your gem server 'https://example.com'"
-
-  #spec.metadata["homepage_uri"] = spec.homepage
-  #spec.metadata["source_code_uri"] = "TODO: Put your gem's public repo URL here."
-  #spec.metadata["changelog_uri"] = "TODO: Put your gem's CHANGELOG.md URL here."
+  spec.metadata["homepage_uri"] = spec.homepage
+  spec.metadata["source_code_uri"] = "https://github.com/chrisliaw/roqs"
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
