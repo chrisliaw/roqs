@@ -20,13 +20,21 @@ RSpec.describe Roqs do
         expect(pubKey).not_to be_nil
         expect(privKey).not_to be_nil
 
+        pubKey2, privKey2 = kem.genkeypair
+        expect(pubKey2).not_to be_nil
+        expect(privKey2).not_to be_nil
+
         ekey, cipher = kem.derive_encapsulation_key(pubKey.bytes)
         dkey = kem.derive_decapsulation_key(cipher, privKey)
         expect(ekey == dkey).to be true
 
-        pubKeyBin = pubKey.bytes
+        ekey2, cipher2 = kem.derive_encapsulation_key(pubKey2.bytes)
+        dkey2 = kem.derive_decapsulation_key(cipher2, privKey2)
+        expect(ekey2 == dkey2).to be true
+        expect(ekey2 != ekey).to be true
 
-        kem2 = Roqs::KEM.new(al)
+        #pubKeyBin = pubKey.bytes
+        #kem2 = Roqs::KEM.new(al)
 
         puts "Public key size : #{pubKey.length} bytes"
         puts "Public key size 2 : #{pubKey.bytes.length} bytes"
