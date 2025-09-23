@@ -16,18 +16,22 @@ RSpec.describe Roqs do
         puts "Testing #{al}"
 
         kem = Roqs::KEM.new(al)
+        puts "Generating #{al} Keypair"
         pubKey, privKey = kem.genkeypair
         expect(pubKey).not_to be_nil
         expect(privKey).not_to be_nil
 
         pubKey2, privKey2 = kem.genkeypair
+        puts "Generating #{al} Keypair 2"
         expect(pubKey2).not_to be_nil
         expect(privKey2).not_to be_nil
 
+        puts "Derive encap key for #{al} "
         ekey, cipher = kem.derive_encapsulation_key(pubKey.bytes)
         dkey = kem.derive_decapsulation_key(cipher, privKey)
         expect(ekey == dkey).to be true
 
+        puts "Derive encap key 2 for #{al} "
         ekey2, cipher2 = kem.derive_encapsulation_key(pubKey2.bytes)
         dkey2 = kem.derive_decapsulation_key(cipher2, privKey2)
         expect(ekey2 == dkey2).to be true

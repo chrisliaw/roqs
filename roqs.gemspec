@@ -29,7 +29,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "teLogger", "~> 0.2"
-  spec.add_dependency "toolrack", "~> 0.23"
+  spec.add_dependency "toolrack", "~> 0.25"
 
   # Uncomment to register a new dependency of your gem
   # spec.add_dependency "example-gem", "~> 1.0"
